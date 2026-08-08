@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cobbinah House - GSTS | GIANT Inspection Welcome</title>
+    <style>
+        :root {
+            --burgundy-deep: #3D0010;
+            --burgundy: #800020;
+            --burgundy-light: #9E0033;
+            --burgundy-glow: #B8002F;
+            --white: #FFFFFF;
+            --cream: #FFF8F0;
+            --gold: #C9A84C;
+            --gold-light: #E0C878;
+            --cake-base: #6B1D2F;
+            --cake-top: #7A2236;
+            --frosting: #FFFDF9;
+            --plate: #F0EBE3;
+            --shadow: rgba(61, 0, 16, 0.5);
+            --text-dark: #1a0006;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #2D000A 0%, #4A0012 25%, #5C0018 50%, #3D0010 75%, #1F0006 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Subtle background texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 60%, rgba(201, 168, 76, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Subtle pattern overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.008) 2px, rgba(255, 255, 255, 0.008) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255, 255, 255, 0.008) 2px, rgba(255, 255, 255, 0.008) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 560px;
+            padding: 20px;
+            perspective: 1000px;
+        }
+
+        /* ==================== SCREEN 1: CABIN SELECTION ==================== */
+        .screen {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+        }
+
+        .screen.selection-screen {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .screen.selection-screen.hidden {
+            opacity: 0;
+            transform: translateY(-40px) scale(0.94);
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .screen.welcome-screen {
+            opacity: 0;
+            transform: translateY(40px) scale(0.94);
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .screen.welcome-screen.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+            position: relative;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 32px 28px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 120px rgba(128, 0, 32, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--burgundy), var(--burgundy-light), var(--gold), var(--burgundy-light), var(--burgundy));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .school-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--burgundy-deep);
+            color: var(--gold-light);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .school-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: dotPulse 1.5s infinite;
+        }
+
+        @keyframes dotPulse {
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+
+        .house-name {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--burgundy);
+            letter-spacing: 1px;
+            margin: 4px 0;
+            text-transform: uppercase;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        .house-subtitle {
+            font-size: 0.85rem;
+            color: #6b4a55;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .divider-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0 18px;
+        }
+        .divider-ornament .line {
+            width: 40px;
+            height: 1px;
+            background: var(--burgundy-light);
+            opacity: 0.5;
+        }
+        .divider-ornament .diamond {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            border-radius: 1px;
+        }
+
+        .selection-label {
+            font-size: 1rem;
+            color: var(--burgundy-deep);
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .cabin-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 420px) {
+            .cabin-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .house-name {
+                font-size: 1.6rem;
+            }
+            .card {
+                padding: 24px 16px;
+            }
+        }
+
+        .cabin-btn {
+            background: var(--white);
+            border: 2px solid #e0d5d8;
+            border-radius: 14px;
+            padding: 18px 10px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--burgundy);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            letter-spacing: 1px;
+        }
+
+        .cabin-btn:hover {
+            border-color: var(--burgundy);
+            background: #fdf5f7;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(128, 0, 32, 0.2);
+        }
+        .cabin-btn:active {
+            transform: scale(0.95);
+            background: #fef0f3;
+            border-color: var(--burgundy-light);
+            transition: all 0.1s ease;
+        }
+        .cabin-btn.selected {
+            background: var(--burgundy);
+            color: var(--white);
+            border-color: var(--burgundy);
+            box-shadow: 0 6px 20px rgba(128, 0, 32, 0.4);
+            animation: selectedPulse 0.5s ease;
+        }
+
+        @keyframes selectedPulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.06);
+            }
+        }
+
+        .cabin-btn .cabin-icon {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 2px;
+            opacity: 0.7;
+            font-weight: normal;
+        }
+
+        .proceed-btn {
+            display: inline-block;
+            margin-top: 18px;
+            background: var(--burgundy);
+            color: var(--white);
+            border: none;
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            opacity: 0.5;
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.3);
+        }
+        .proceed-btn.enabled {
+            opacity: 1;
+            pointer-events: all;
+            animation: gentleGlow 2s infinite;
+        }
+        .proceed-btn.enabled:hover {
+            background: var(--burgundy-light);
+            box-shadow: 0 8px 28px rgba(128, 0, 32, 0.5);
+            transform: translateY(-2px);
+        }
+        .proceed-btn.enabled:active {
+            transform: scale(0.95);
+            transition: all 0.1s ease;
+        }
+
+        @keyframes gentleGlow {
+            0%,
+            100% {
+                box-shadow: 0 4px 15px rgba(128, 0, 32, 0.3);
+            }
+            50% {
+                box-shadow: 0 6px 30px rgba(184, 0, 47, 0.55);
+            }
+        }
+
+        /* ==================== SCREEN 2: WELCOME ==================== */
+        .welcome-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 28px 24px 32px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 120px rgba(128, 0, 32, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: visible;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            transition: box-shadow 0.3s ease;
+        }
+        .welcome-card:active {
+            box-shadow:
+                0 15px 45px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.15),
+                0 0 160px rgba(184, 0, 47, 0.5);
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--burgundy), var(--burgundy-light), var(--gold), var(--burgundy-light), var(--burgundy));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .cabin-badge {
+            display: inline-block;
+            background: var(--burgundy);
+            color: var(--white);
+            padding: 8px 22px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .welcome-title {
+            font-size: 1.6rem;
+            color: var(--burgundy);
+            font-weight: bold;
+            margin: 8px 0 4px;
+            letter-spacing: 1px;
+        }
+
+        .giant-label {
+            font-size: 0.7rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        /* ==================== CAKE CSS ART ==================== */
+        .cake-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 10px auto 20px;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+        .cake-wrapper:active {
+            transform: scale(0.96);
+        }
+        .cake-wrapper .tap-hint {
+            position: absolute;
+            bottom: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: #999;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: hintBounce 1.8s infinite;
+            white-space: nowrap;
+        }
+        @keyframes hintBounce {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateX(-50%) translateY(-6px);
+                opacity: 1;
+            }
+        }
+
+        /* Plate */
+        .plate {
+            width: 180px;
+            height: 22px;
+            background: linear-gradient(180deg, #f7f3ec 0%, #e8e0d5 40%, #d5cbc0 100%);
+            border-radius: 50%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            box-shadow:
+                0 6px 16px rgba(0, 0, 0, 0.25),
+                inset 0 2px 3px rgba(255, 255, 255, 0.6);
+        }
+        .plate::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 14px;
+            right: 14px;
+            height: 10px;
+            background: #efe9df;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Cake body */
+        .cake-body {
+            position: relative;
+            z-index: 3;
+            margin-top: -8px;
+        }
+        .cake-layer {
+            margin: 0 auto;
+            border-radius: 8px 8px 4px 4px;
+            position: relative;
+            box-shadow:
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .cake-layer.bottom {
+            width: 140px;
+            height: 48px;
+            background: linear-gradient(180deg, #8B2D42 0%, #6B1D2F 40%, #5C1827 100%);
+            margin-bottom: 0;
+        }
+        .cake-layer.top {
+            width: 110px;
+            height: 40px;
+            background: linear-gradient(180deg, #9A3348 0%, #7A2236 40%, #681D2D 100%);
+            margin-top: -2px;
+        }
+
+        /* Frosting between layers */
+        .frosting-strip {
+            width: 144px;
+            height: 12px;
+            background: var(--frosting);
+            margin: -2px auto 0;
+            border-radius: 6px;
+            position: relative;
+            z-index: 4;
+            box-shadow:
+                0 2px 3px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+        .frosting-strip::before,
+        .frosting-strip::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 10px;
+            background: var(--frosting);
+            border-radius: 50%;
+            bottom: -5px;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+        }
+        .frosting-strip::before {
+            left: 14px;
+        }
+        .frosting-strip::after {
+            right: 14px;
+        }
+        .frosting-drip {
+            position: absolute;
+            width: 8px;
+            height: 16px;
+            background: var(--frosting);
+            border-radius: 0 0 6px 6px;
+            bottom: -12px;
+            z-index: 5;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .frosting-drip.d1 {
+            left: 22px;
+            height: 13px;
+        }
+        .frosting-drip.d2 {
+            left: 50%;
+            transform: translateX(-50%);
+            height: 17px;
+        }
+        .frosting-drip.d3 {
+            right: 22px;
+            height: 11px;
+        }
+
+        /* Top frosting swirl */
+        .top-frosting {
+            width: 114px;
+            height: 14px;
+            background: var(--frosting);
+            margin: -3px auto 0;
+            border-radius: 10px 10px 4px 4px;
+            position: relative;
+            z-index: 6;
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+        .frosting-swirl {
+            position: absolute;
+            width: 16px;
+            height: 8px;
+            background: var(--frosting);
+            border-radius: 50%;
+            top: -5px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+        }
+        .frosting-swirl.s1 {
+            left: 15px;
+        }
+        .frosting-swirl.s2 {
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 10px;
+            top: -6px;
+        }
+        .frosting-swirl.s3 {
+            right: 15px;
+        }
+
+        /* Sprinkles */
+        .sprinkle {
+            position: absolute;
+            width: 4px;
+            height: 10px;
+            border-radius: 3px;
+            z-index: 7;
+            opacity: 0.85;
+        }
+
+        /* Candles */
+        .candles-container {
+            position: absolute;
+            top: -52px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 8;
+        }
+        .candle {
+            width: 8px;
+            height: 38px;
+            background: linear-gradient(180deg, #fffefd 0%, #f5f0e8 30%, #e8dcc8 100%);
+            border-radius: 4px 4px 2px 2px;
+            position: relative;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                0 2px 3px rgba(0, 0, 0, 0.2);
+        }
+        .candle::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1.5px;
+            height: 12px;
+            background: #3D0010;
+            border-radius: 1px;
+            opacity: 0.5;
+            z-index: 1;
+        }
+        .candle.tilt-left {
+            transform: rotate(-6deg);
+        }
+        .candle.tilt-right {
+            transform: rotate(6deg);
+        }
+
+        /* Flame */
+        .flame {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 22px;
+            z-index: 10;
+        }
+        .flame-outer {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 18px;
+            background: #FF8C00;
+            border-radius: 50% 50% 30% 30%;
+            animation: flameFlicker 0.3s infinite alternate ease-in-out;
+            box-shadow: 0 0 12px #FF6B00, 0 0 24px rgba(255, 140, 0, 0.6), 0 0 36px rgba(255, 100, 0, 0.3);
+        }
+        .flame-inner {
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 7px;
+            height: 13px;
+            background: #FFD700;
+            border-radius: 50% 50% 25% 25%;
+            animation: flameFlickerInner 0.25s infinite alternate ease-in-out;
+            box-shadow: 0 0 6px #FFE44D;
+            z-index: 11;
+        }
+        .flame-core {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 7px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            z-index: 12;
+            animation: flameFlickerCore 0.2s infinite alternate ease-in-out;
+            box-shadow: 0 0 4px #fff;
+        }
+
+        @keyframes flameFlicker {
+            0% {
+                transform: translateX(-50%) scaleY(1) scaleX(1);
+                opacity: 0.9;
+            }
+            25% {
+                transform: translateX(-48%) scaleY(1.15) scaleX(0.85);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(-52%) scaleY(0.9) scaleX(1.1);
+                opacity: 0.85;
+            }
+            75% {
+                transform: translateX(-49%) scaleY(1.08) scaleX(0.9);
+                opacity: 0.95;
+            }
+            100% {
+                transform: translateX(-50%) scaleY(1.05) scaleX(0.95);
+                opacity: 0.9;
+            }
+        }
+        @keyframes flameFlickerInner {
+            0% {
+                transform: translateX(-50%) scaleY(1) scaleX(1);
+            }
+            50% {
+                transform: translateX(-48%) scaleY(1.2) scaleX(0.8);
+            }
+            100% {
+                transform: translateX(-52%) scaleY(0.85) scaleX(1.15);
+            }
+        }
+        @keyframes flameFlickerCore {
+            0% {
+                transform: translateX(-50%) scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateX(-47%) scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-53%) scale(0.8);
+                opacity: 0.8;
+            }
+        }
+
+        /* ==================== MESSAGE AREA ==================== */
+        .message-display {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px 0;
+            transition: all 0.4s ease;
+        }
+        .message-text {
+            font-size: 1.05rem;
+            color: var(--burgundy-deep);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+            font-style: italic;
+            padding: 8px 16px;
+            background: #fdf5f7;
+            border-radius: 12px;
+            border-left: 3px solid var(--gold);
+            transition: all 0.4s ease;
+            animation: messageIn 0.5s ease;
+        }
+        @keyframes messageIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==================== CONFETTI ==================== */
+        .confetti-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            animation: confettiBurst 1.2s ease-out forwards;
+            border-radius: 2px;
+        }
+        @keyframes confettiBurst {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.2);
+            }
+        }
+
+        /* ==================== CHANGE CABIN BUTTON ==================== */
+        .change-cabin-btn {
+            display: inline-block;
+            margin-top: 14px;
+            background: transparent;
+            color: #999;
+            border: 1px solid #ddd;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+        .change-cabin-btn:hover {
+            color: var(--burgundy);
+            border-color: var(--burgundy-light);
+            background: #fdf5f7;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px 14px;
+            }
+            .welcome-card {
+                padding: 20px 14px 24px;
+            }
+            .house-name {
+                font-size: 1.5rem;
+            }
+            .welcome-title {
+                font-size: 1.3rem;
+            }
+            .plate {
+                width: 140px;
+                height: 18px;
+            }
+            .cake-layer.bottom {
+                width: 110px;
+                height: 38px;
+            }
+            .cake-layer.top {
+                width: 86px;
+                height: 32px;
+            }
+            .frosting-strip {
+                width: 114px;
+                height: 10px;
+            }
+            .top-frosting {
+                width: 90px;
+                height: 11px;
+            }
+            .candles-container {
+                top: -42px;
+                gap: 12px;
+            }
+            .candle {
+                width: 6px;
+                height: 30px;
+            }
+            .flame {
+                top: -16px;
+                width: 10px;
+                height: 17px;
+            }
+            .flame-outer {
+                width: 9px;
+                height: 14px;
+            }
+            .flame-inner {
+                width: 5px;
+                height: 10px;
+            }
+            .flame-core {
+                width: 2px;
+                height: 5px;
+            }
+            .message-text {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container" id="mainContainer">
+        <!-- ==================== SCREEN 1: CABIN SELECTION ==================== -->
+        <div class="screen selection-screen" id="selectionScreen">
+            <div class="card">
+                <div class="school-badge">
+                    <span class="dot"></span> GHANA SECONDARY TECHNICAL SCHOOL
+                    <span class="dot"></span>
+                </div>
+                <div class="house-name">Cobbinah House</div>
+                <div class="house-subtitle">Est. Excellence</div>
+                <div class="divider-ornament">
+                    <span class="line"></span><span class="diamond"></span><span class="line"></span>
+                </div>
+                <p class="selection-label">Select Your Cabin</p>
+                <div class="cabin-grid" id="cabinGrid">
+                    <!-- Dynamically filled by JS -->
+                </div>
+                <button class="proceed-btn" id="proceedBtn" disabled>
+                    Welcome the GIANT &rarr;
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== SCREEN 2: WELCOME ==================== -->
+        <div class="screen welcome-screen" id="welcomeScreen">
+            <div class="welcome-card" id="welcomeCard">
+                <div class="school-badge">
+                    <span class="dot"></span> GHANA SECONDARY TECHNICAL SCHOOL
+                    <span class="dot"></span>
+                </div>
+                <div class="house-name" style="font-size:1.3rem;">Cobbinah House</div>
+                <span class="cabin-badge" id="cabinBadge">Cabin —</span>
+                <div class="welcome-title" id="welcomeTitle">Welcome, GIANT!</div>
+                <div class="giant-label">✦ Honoured Guest ✦</div>
+
+                <!-- CSS Cake -->
+                <div class="cake-wrapper" id="cakeWrapper" title="Tap for a special message">
+                    <div class="plate"></div>
+                    <div class="cake-body">
+                        <!-- Bottom layer -->
+                        <div class="cake-layer bottom"></div>
+                        <!-- Frosting between -->
+                        <div class="frosting-strip">
+                            <span class="frosting-drip d1"></span>
+                            <span class="frosting-drip d2"></span>
+                            <span class="frosting-drip d3"></span>
+                        </div>
+                        <!-- Top layer -->
+                        <div class="cake-layer top"></div>
+                        <!-- Top frosting -->
+                        <div class="top-frosting">
+                            <span class="frosting-swirl s1"></span>
+                            <span class="frosting-swirl s2"></span>
+                            <span class="frosting-swirl s3"></span>
+                        </div>
+                    </div>
+                    <!-- Candles -->
+                    <div class="candles-container">
+                        <div class="candle tilt-left">
+                            <div class="flame">
+                                <div class="flame-outer"></div>
+                                <div class="flame-inner"></div>
+                                <div class="flame-core"></div>
+                            </div>
+                        </div>
+                        <div class="candle">
+                            <div class="flame">
+                                <div class="flame-outer" style="animation-delay:0.1s;"></div>
+                                <div class="flame-inner" style="animation-delay:0.08s;"></div>
+                                <div class="flame-core" style="animation-delay:0.05s;"></div>
+                            </div>
+                        </div>
+                        <div class="candle tilt-right">
+                            <div class="flame">
+                                <div class="flame-outer" style="animation-delay:0.15s;"></div>
+                                <div class="flame-inner" style="animation-delay:0.12s;"></div>
+                                <div class="flame-core" style="animation-delay:0.1s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="tap-hint">tap the cake</span>
+                </div>
+
+                <!-- Message display -->
+                <div class="message-display" id="messageDisplay">
+                    <p class="message-text" id="messageText">
+                        We are deeply honoured to have you here today, Sir!
+                    </p>
+                </div>
+
+                <button class="change-cabin-btn" id="changeCabinBtn">
+                    &larr; Change Cabin
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ==================== CONFIGURATION ====================
+            const HOUSE_NAME = 'Cobbinah House';
+            const SCHOOL_NAME = 'Ghana Secondary Technical School';
+            const SCHOOL_SHORT = 'GSTS';
+            const TOTAL_CABINS = 7; // Cabins 1 through 10
+
+            // Honorific messages for the GIANTS (old boys)
+            const giantMessages = [
+                'We are deeply honoured to have you here today, Sir! 🙏',
+                'Welcome back home, dear GIANT! ' + HOUSE_NAME + ' embraces you with pride.',
+                'Your legacy inspires us every single day. Thank you for visiting, Sir!',
+                HOUSE_NAME + ' stands tall because of GIANTS like you. Welcome!',
+                'The foundations you laid remain unshaken. Welcome home, GIANT!',
+                'We salute you, Sir! Your presence graces our humble abode.',
+                'From ' + SCHOOL_SHORT + ' to the world, and back home again. Welcome!',
+                'The spirit of excellence you built burns brighter than ever, Sir!',
+                'Thank you for paving the way. ' + HOUSE_NAME + ' is eternally grateful.',
+                'Once a GIANT, always a GIANT. We are truly honoured, Sir!',
+                'Your footsteps echo through these halls. Welcome back, GIANT!',
+                'The pride of ' + SCHOOL_SHORT + ' returns. ' + HOUSE_NAME + ' welcomes you!',
+                'You are the reason we dream big. Thank you for being here, Sir!',
+                'A warm ' + HOUSE_NAME + ' welcome to our distinguished GIANT!',
+                'Excellence runs in your veins. We are blessed by your visit, Sir!'
+            ];
+
+            // ==================== DOM ELEMENTS ====================
+            const selectionScreen = document.getElementById('selectionScreen');
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const cabinGrid = document.getElementById('cabinGrid');
+            const proceedBtn = document.getElementById('proceedBtn');
+            const cabinBadge = document.getElementById('cabinBadge');
+            const welcomeTitle = document.getElementById('welcomeTitle');
+            const messageText = document.getElementById('messageText');
+            const messageDisplay = document.getElementById('messageDisplay');
+            const cakeWrapper = document.getElementById('cakeWrapper');
+            const welcomeCard = document.getElementById('welcomeCard');
+            const changeCabinBtn = document.getElementById('changeCabinBtn');
+            const mainContainer = document.getElementById('mainContainer');
+
+            let selectedCabin = null;
+            let currentMessageIndex = 0;
+            let messageShuffleQueue = [];
+
+            // ==================== BUILD CABIN GRID ====================
+            function buildCabinGrid() {
+                cabinGrid.innerHTML = '';
+                for (let i = 1; i <= TOTAL_CABINS; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = 'cabin-btn';
+                    btn.innerHTML = `${i}<span class="cabin-icon">cabin</span>`;
+                    btn.setAttribute('data-cabin', i);
+                    btn.addEventListener('click', () => selectCabin(i, btn));
+                    cabinGrid.appendChild(btn);
+                }
+            }
+
+            // ==================== SELECT CABIN ====================
+            function selectCabin(cabinNum, btnElement) {
+                // Remove previous selection
+                document.querySelectorAll('.cabin-btn.selected').forEach(b => b.classList.remove(
+                'selected'));
+                // Mark selected
+                btnElement.classList.add('selected');
+                selectedCabin = cabinNum;
+                // Enable proceed button
+                proceedBtn.classList.add('enabled');
+                proceedBtn.disabled = false;
+                // Haptic-like feedback
+                pulseElement(btnElement);
+            }
+
+            // ==================== PROCEED TO WELCOME SCREEN ====================
+            proceedBtn.addEventListener('click', () => {
+                if (!selectedCabin) return;
+                showWelcomeScreen(selectedCabin);
+            });
+
+            function showWelcomeScreen(cabinNum) {
+                // Update welcome screen content
+                cabinBadge.textContent = 'Cabin ' + cabinNum;
+                welcomeTitle.textContent = 'Welcome, GIANT!';
+
+                // Reset and shuffle messages
+                shuffleMessages();
+                currentMessageIndex = 0;
+                updateMessageDisplay();
+
+                // Reset tap hint visibility
+                const tapHint = cakeWrapper.querySelector('.tap-hint');
+                if (tapHint) tapHint.style.opacity = '1';
+
+                // Transition screens
+                selectionScreen.classList.add('hidden');
+                welcomeScreen.classList.add('active');
+
+                // Save to localStorage
+                try {
+                    localStorage.setItem('cobbinahHouse_cabin', cabinNum);
+                } catch (e) {
+                    // localStorage not available
+                }
+
+                // Entrance animation for the cake
+                cakeWrapper.style.animation = 'none';
+                cakeWrapper.offsetHeight;
+                cakeWrapper.style.animation = 'cakeEntrance 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                setTimeout(() => {
+                    cakeWrapper.style.animation = '';
+                }, 700);
+
+                // Scroll to welcome card on mobile
+                welcomeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            // ==================== SHUFFLE MESSAGES ====================
+            function shuffleMessages() {
+                messageShuffleQueue = [...giantMessages];
+                // Fisher-Yates shuffle
+                for (let i = messageShuffleQueue.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [messageShuffleQueue[i], messageShuffleQueue[j]] = [messageShuffleQueue[j],
+                        messageShuffleQueue[i]
+                    ];
+                }
+                currentMessageIndex = 0;
+            }
+
+            function getNextMessage() {
+                if (currentMessageIndex >= messageShuffleQueue.length) {
+                    shuffleMessages();
+                }
+                const msg = messageShuffleQueue[currentMessageIndex];
+                currentMessageIndex++;
+                return msg;
+            }
+
+            function updateMessageDisplay() {
+                const newMsg = getNextMessage();
+                messageText.style.opacity = '0';
+                messageText.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    messageText.textContent = newMsg;
+                    messageText.style.opacity = '1';
+                    messageText.style.transform = 'translateY(0)';
+                    messageText.style.animation = 'none';
+                    messageText.offsetHeight;
+                    messageText.style.animation = 'messageIn 0.5s ease';
+                }, 200);
+            }
+
+            // ==================== TAP CAKE / WELCOME CARD ====================
+            function handleTap(e) {
+                // Only on welcome screen
+                if (!welcomeScreen.classList.contains('active')) return;
+
+                // Prevent double-tap zoom on mobile
+                e.preventDefault();
+
+                // Burst confetti
+                const rect = cakeWrapper.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2 - 30;
+                spawnConfetti(centerX, centerY);
+
+                // Update message
+                updateMessageDisplay();
+
+                // Brief cake bounce
+                cakeWrapper.style.transition = 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                cakeWrapper.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    cakeWrapper.style.transform = 'scale(1.03)';
+                    setTimeout(() => {
+                        cakeWrapper.style.transform = 'scale(1)';
+                        setTimeout(() => {
+                            cakeWrapper.style.transition =
+                                'transform 0.15s ease';
+                        }, 200);
+                    }, 100);
+                }, 100);
+
+                // Hide tap hint after first tap
+                const tapHint = cakeWrapper.querySelector('.tap-hint');
+                if (tapHint) {
+                    tapHint.style.transition = 'opacity 0.5s ease';
+                    tapHint.style.opacity = '0';
+                }
+
+                // Subtle card glow
+                welcomeCard.style.boxShadow =
+                    '0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.15), 0 0 180px rgba(184,0,47,0.6)';
+                setTimeout(() => {
+                    welcomeCard.style.boxShadow =
+                        '0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1), 0 0 120px rgba(128,0,32,0.3)';
+                }, 400);
+            }
+
+            cakeWrapper.addEventListener('click', handleTap);
+            cakeWrapper.addEventListener('touchend', function(e) {
+                // Prevent the touchend from also triggering click on some devices
+                e.preventDefault();
+                handleTap(e);
+            });
+            // Also allow tapping the whole card area
+            welcomeCard.addEventListener('click', function(e) {
+                // Only if not clicking the change cabin button
+                if (e.target.closest('#changeCabinBtn')) return;
+                if (e.target.closest('#cakeWrapper')) return; // cake handles its own
+                handleTap(e);
+            });
+
+            // ==================== CONFETTI SYSTEM ====================
+            function spawnConfetti(cx, cy) {
+                const colors = [
+                    '#800020', '#9E0033', '#B8002F', '#C9A84C', '#E0C878',
+                    '#FFFFFF', '#FFD700', '#FF8C00', '#fdf5f7', '#FF6B6B',
+                    '#C9A84C', '#FFF8F0', '#D4AF37', '#FFE44D'
+                ];
+                const particleCount = 55;
+
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'confetti-particle';
+                    const size = Math.random() * 8 + 4;
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 180 + 60;
+                    const dx = Math.cos(angle) * distance;
+                    const dy = Math.sin(angle) * distance - Math.random() * 100 - 30;
+                    const rot = (Math.random() - 0.5) * 720;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const shape = Math.random() > 0.5 ? '50%' : '2px';
+
+                    particle.style.cssText = `
+                            position: fixed;
+                            left: ${cx}px;
+                            top: ${cy}px;
+                            width: ${size}px;
+                            height: ${size * (Math.random() * 0.6 + 0.6)}px;
+                            background: ${color};
+                            border-radius: ${shape};
+                            pointer-events: none;
+                            z-index: 1000;
+                            --dx: ${dx}px;
+                            --dy: ${dy}px;
+                            --rot: ${rot}deg;
+                            animation: confettiBurst ${Math.random() * 0.8 + 0.8}s ease-out forwards;
+                            animation-delay: ${Math.random() * 0.15}s;
+                        `;
+
+                    document.body.appendChild(particle);
+
+                    // Clean up after animation
+                    const delay = parseFloat(particle.style.animationDelay) || 0;
+                    const duration = 1.2;
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.remove();
+                        }
+                    }, (delay + duration) * 1000 + 200);
+                }
+            }
+
+            // ==================== CHANGE CABIN ====================
+            changeCabinBtn.addEventListener('click', () => {
+                // Remove active from welcome
+                welcomeScreen.classList.remove('active');
+                selectionScreen.classList.remove('hidden');
+                // Reset selection
+                selectedCabin = null;
+                document.querySelectorAll('.cabin-btn.selected').forEach(b => b.classList.remove(
+                    'selected'));
+                proceedBtn.classList.remove('enabled');
+                proceedBtn.disabled = true;
+                // Clear localStorage
+                try {
+                    localStorage.removeItem('cobbinahHouse_cabin');
+                } catch (e) {}
+                // Scroll to selection
+                selectionScreen.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Reset tap hint
+                const tapHint = cakeWrapper.querySelector('.tap-hint');
+                if (tapHint) tapHint.style.opacity = '1';
+            });
+
+            // ==================== PULSE HELPER ====================
+            function pulseElement(el) {
+                el.style.transition = 'transform 0.1s ease';
+                el.style.transform = 'scale(0.93)';
+                setTimeout(() => {
+                    el.style.transform = 'scale(1.04)';
+                    setTimeout(() => {
+                        el.style.transform = 'scale(1)';
+                    }, 120);
+                }, 100);
+            }
+
+            // ==================== CAKE ENTRANCE KEYFRAMES ====================
+            const cakeEntranceStyle = document.createElement('style');
+            cakeEntranceStyle.textContent = `
+                    @keyframes cakeEntrance {
+                        0% { transform: scale(0.3) translateY(30px); opacity: 0; }
+                        60% { transform: scale(1.06) translateY(-6px); opacity: 1; }
+                        80% { transform: scale(0.96) translateY(2px); }
+                        100% { transform: scale(1) translateY(0); opacity: 1; }
+                    }
+                `;
+            document.head.appendChild(cakeEntranceStyle);
+
+            // ==================== INITIALIZATION ====================
+            function init() {
+                buildCabinGrid();
+
+                // Check localStorage for saved cabin
+                let savedCabin = null;
+                try {
+                    savedCabin = localStorage.getItem('cobbinahHouse_cabin');
+                } catch (e) {}
+
+                if (savedCabin && parseInt(savedCabin) >= 1 && parseInt(savedCabin) <= TOTAL_CABINS) {
+                    // Auto-select and show welcome
+                    const cabinNum = parseInt(savedCabin);
+                    selectedCabin = cabinNum;
+                    // Simulate selection visually briefly then transition
+                    const btn = document.querySelector(`.cabin-btn[data-cabin="${cabinNum}"]`);
+                    if (btn) btn.classList.add('selected');
+                    proceedBtn.classList.add('enabled');
+                    proceedBtn.disabled = false;
+                    // Short delay then show welcome
+                    setTimeout(() => {
+                        showWelcomeScreen(cabinNum);
+                    }, 400);
+                }
+
+                // If URL has cabin parameter, use it
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlCabin = urlParams.get('cabin');
+                if (urlCabin && parseInt(urlCabin) >= 1 && parseInt(urlCabin) <= TOTAL_CABINS) {
+                    const cabinNum = parseInt(urlCabin);
+                    const btn = document.querySelector(`.cabin-btn[data-cabin="${cabinNum}"]`);
+                    if (btn) {
+                        selectedCabin = cabinNum;
+                        btn.classList.add('selected');
+                        proceedBtn.classList.add('enabled');
+                        proceedBtn.disabled = false;
+                        setTimeout(() => {
+                            showWelcomeScreen(cabinNum);
+                        }, 300);
+                    }
+                }
+            }
+
+            init();
+
+            console.log('%c🏠 ' + HOUSE_NAME + ' %c| %c🎓 ' + SCHOOL_NAME,
+                'color:#800020;font-size:1.2em;font-weight:bold;',
+                '',
+                'color:#C9A84C;font-weight:bold;');
+            console.log('%c✨ Ready to welcome our distinguished GIANTS! %c🕯️',
+                'color:#800020;font-size:1em;',
+                '');
+            console.log('%c💡 Tip: Add ?cabin=3 to the URL to jump directly to a cabin.',
+                'color:#999;font-style:italic;');
+        })();
+    </script>
+</body>
+</html>
